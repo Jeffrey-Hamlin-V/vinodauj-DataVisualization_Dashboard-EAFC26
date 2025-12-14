@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EAFC 26 – Football Analytics Dashboard</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Compact page header: title + gender toggle -->
+  <div id="page-header">
+    <h1>EAFC 26 – Football Analytics Dashboard</h1>
+    <div class="gender-toggle">
+      <button class="gender-btn active" data-gender="ALL">All</button>
+      <button class="gender-btn" data-gender="M">Men</button>
+      <button class="gender-btn" data-gender="F">Women</button>
+      <button id="reset-filters-btn" title="Reset filters" style="margin-left:8px;padding:4px 8px;border-radius:10px;background:#374151;color:#fff;border:none;cursor:pointer;font-size:12px;">Reset</button>
+    </div>
+  </div>
+
+  <!-- Main dashboard wrapper -->
+  <section class="panel">
+
+    <!-- 3 x 3 GRID LAYOUT -->
+    <div class="grid-3x3">
+
+      <!-- 1 = PCA radial cluster view -->
+      <div class="grid-cell" id="cell-1">
+        <div class="chart-card">
+          <h2>Playing Style Clusters (Radial PCA)</h2>
+          <p class="chart-subtitle">
+            Players grouped by multi-attribute similarity. Colour = cluster.
+          </p>
+          <div id="cluster-radial"></div>
+        </div>
+      </div>
+
+      <!-- 2 = TECH vs PHYS scatter -->
+      <div class="grid-cell" id="cell-2">
+        <div class="chart-card">
+          <h2>Technical Skill vs Physicality</h2>
+          <p class="chart-subtitle">
+            Each dot is a player. Filters: gender &amp; country (via map).
+            Brush to focus the summary card.
+          </p>
+          <div id="scatter-physical-technical"></div>
+        </div>
+      </div>
+
+      <!-- 3 = PLAYER FINDER (OVR + role + cluster-aware) -->
+      <div class="grid-cell" id="cell-3">
+        <div class="chart-card">
+          <h2>Player Finder</h2>
+          <p class="chart-subtitle">
+            Filter by OVR range, role and cluster to get the best 3 players.
+          </p>
+          <div id="player-finder">
+            <div class="finder-controls">
+              <div class="finder-row">
+                <label for="ovr-min">OVR:</label>
+                <input type="number" id="ovr-min" min="40" max="99" value="80">
+                <span class="dash">–</span>
+                <input type="number" id="ovr-max" min="40" max="99" value="99">
+              </div>
+              <div class="finder-row">
+                <label for="role-select">Role:</label>
+                <select id="role-select">
+                  <option value="any">Any</option>
+                  <option value="attack">Attack</option>
+                  <option value="midfield">Midfield</option>
+                  <option value="defence">Defence</option>
+                </select>
+              </div>
+              <div class="finder-row">
+                <label for="cluster-filter-select">Cluster:</label>
+                <select id="cluster-filter-select">
+                  <option value="any">Any cluster</option>
+                  <!-- Options filled dynamically -->
+                </select>
+              </div>
+              <button id="finder-search-btn">Search</button>
+            </div>
+            <div id="player-finder-results"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 = TOP 10 TABLE -->
+      <div class="grid-cell" id="cell-4">
+        <div class="chart-card">
+          <h2>Top 10 Stats</h2>
+          <div class="table-toggle">
+            <button class="table-btn active" data-mode="country">Countries</button>
+            <button class="table-btn" data-mode="club">Clubs</button>
+            <button class="table-btn" data-mode="players">Players</button>
+            <button class="table-btn" data-mode="leagues">Leagues</button>
+
+          </div>
+          <div id="top-table-wrapper">
+            <table id="top-table">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Avg OVR</th>
+              </tr>
+              </thead>
+              <tbody>
+              <!-- Filled dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 = WORLD MAP -->
+      <div class="grid-cell" id="cell-5">
+        <div class="chart-card">
+          <h2>World Map Heatmap (Players per Nation)</h2>
+          <div id="world-map-container">
+            <div id="world-map"></div>
+            <div id="world-legend" class="inside-legend"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 = SELECTION SUMMARY CARD -->
+      <div class="grid-cell" id="cell-6">
+        <div class="chart-card">
+          <h2>Current Selection Summary</h2>
+          <p class="chart-subtitle">
+            Brushed players in the scatter (or all filtered players if none selected).
+          </p>
+          <div id="selection-summary"></div>
+        </div>
+      </div>
+
+      <!-- 7 = SQUAD COMPOSITION -->
+      <div class="grid-cell" id="cell-7">
+        <div class="chart-card">
+          <h2>Squad Composition vs Ideal Formation</h2>
+          <div id="squad-composition"></div>
+        </div>
+      </div>
+
+      <!-- 8 = COMBINED: LEAGUE STRENGTH + TALENT FLOWS -->
+      <div class="grid-cell" id="cell-8">
+        <div class="chart-card">
+          <h2>Leagues – Strength & Talent Flows</h2>
+          <div class="combined-tabs">
+            <button class="combined-tab active" data-mode="league-strength">League Strength</button>
+            <button class="combined-tab" data-mode="league-flows">Talent Flows</button>
+          </div>
+          <div id="combined-league-view">
+            <div id="league-strength"></div>
+            <div id="league-nation-graph"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 = empty / reserved -->
+      <div class="grid-cell" id="cell-9">
+        <div class="chart-card">
+          <h2>Attribute Explainability</h2>
+          <p class="chart-subtitle">
+            Why a player (or selection) is rated that way — radial contribution view.
+          </p>
+          <div id="tile-9"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Shared tooltip -->
+  <div id="tooltip"></div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,560 @@
+/* ===========================
+   GLOBAL PAGE STYLE
+   =========================== */
+body {
+  background: #0f0f11;
+  color: #f3f3f3;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Compact header with title + gender toggle */
+#page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 24px 4px 24px;
+}
+
+#page-header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+/* ===========================
+   MAIN PANEL
+   =========================== */
+.panel {
+  background: #18181b;
+  margin: 4px 24px 24px 24px;
+  padding: 12px;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+/* ===========================
+   GENDER TOGGLE
+   =========================== */
+.gender-toggle .gender-btn {
+  background: #26262b;
+  color: #ddd;
+  border: 1px solid #444;
+  padding: 4px 12px;
+  margin-left: 4px;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.gender-toggle .gender-btn:hover {
+  transform: translateY(-1px);
+}
+
+.gender-toggle .gender-btn.active {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #fff;
+}
+
+/* ===========================
+   3 x 3 GRID
+   =========================== */
+.grid-3x3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* increase row height to avoid chart cropping */
+  grid-auto-rows: 360px;
+  gap: 10px;
+}
+
+.grid-cell {
+  min-width: 0; /* prevent overflow */
+}
+
+/* Each chart card inside a grid cell */
+.chart-card {
+  background: #141418;
+  border-radius: 10px;
+  /* slightly reduced padding to free vertical space */
+  padding: 6px 8px 6px 8px;
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Headings inside cards – compact */
+.chart-card h2 {
+  margin: 0 0 3px 0;
+  font-size: 14px;
+}
+
+.chart-subtitle {
+  margin-top: 0;
+  margin-bottom: 6px;
+  font-size: 11px;
+  color: #b0b0b0;
+}
+
+/* Inner containers grow to use remaining vertical space */
+.chart-card > div:last-child {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===========================
+   WORLD MAP
+   =========================== */
+#world-map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#world-map svg {
+  border: 2px solid #444;
+  border-radius: 8px;
+  background: #151515;
+}
+
+/* Legend */
+.inside-legend {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 20, 20, 0.75);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 10px;
+  z-index: 10;
+}
+
+.inside-legend .legend-item {
+  display: flex;
+  align-items: center;
+}
+
+.inside-legend .legend-color-box {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1px solid #222;
+  margin-right: 3px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Highlight selected country outline */
+.country.selected {
+  stroke: #ffffff !important;
+  stroke-width: 1.5px !important;
+}
+
+/* ===========================
+   TOP 10 TABLE
+   =========================== */
+.table-toggle {
+  margin-bottom: 4px;
+}
+
+.table-toggle .table-btn {
+  background: #26262b;
+  color: #ddd;
+  border: 1px solid #444;
+  padding: 3px 8px;
+  margin-right: 4px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 10px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.table-toggle .table-btn.active {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #fff;
+}
+
+/* Scrollable wrapper so table never gets cropped */
+#top-table-wrapper {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+}
+
+#top-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+#top-table thead {
+  background: #202028;
+}
+
+#top-table th,
+#top-table td {
+  padding: 3px 5px;
+  border-bottom: 1px solid #2b2b33;
+  text-align: left;
+}
+
+#top-table tbody tr:nth-child(even) {
+  background: #191920;
+}
+
+/* ===========================
+   PLAYER FINDER (Cell 3)
+   =========================== */
+#player-finder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.finder-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.finder-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.finder-row label {
+  color: #d1d5db;
+}
+
+.finder-row input[type="number"] {
+  width: 50px;
+  background: #26262b;
+  border: 1px solid #4b5563;
+  border-radius: 4px;
+  color: #e5e7eb;
+  padding: 2px 4px;
+  font-size: 11px;
+}
+
+.finder-row select {
+  background: #26262b;
+  border: 1px solid #4b5563;
+  border-radius: 4px;
+  color: #e5e7eb;
+  padding: 2px 4px;
+  font-size: 11px;
+}
+
+.finder-controls .dash {
+  color: #9ca3af;
+}
+
+#finder-search-btn {
+  background: #16a34a;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  padding: 3px 10px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+#finder-search-btn:hover {
+  background: #15803d;
+}
+
+#player-finder-results {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.player-card {
+  background: #1f2933;
+  border-radius: 6px;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+}
+
+.player-card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.player-card-main {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.player-label {
+  color: #9ca3af;
+  font-size: 10px;
+}
+
+/* ===========================
+   CLUSTER RADIAL (Cell 1)
+   =========================== */
+#cluster-radial {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.cluster-inner {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cluster-legend {
+  font-size: 9px;
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cluster-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-radius: 4px;
+}
+
+.cluster-legend-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.cluster-legend-color {
+  width: 16px;
+  height: 16px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.cluster-legend-label {
+  color: #e5e7eb;
+}
+
+.cluster-legend-item.active {
+  background: rgba(59, 130, 246, 0.2);
+  font-weight: 600;
+}
+
+/* ===========================
+   SELECTION SUMMARY (Cell 6)
+   =========================== */
+#selection-summary {
+  width: 100%;
+  height: 100%;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  /* Ensure the summary content is not vertically centered by the parent .chart-card */
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.summary-header {
+  margin: 0 0 2px 0;
+  line-height: 1.15;
+  color: #e5e7eb;
+}
+
+.summary-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.summary-tile {
+  background: #1f2933;
+  border-radius: 6px;
+  padding: 3px 6px;
+}
+
+.summary-label {
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+/* Tile 9 radial explainability */
+#tile-9 { width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+.tile9-title { text-align:center; color:#9ca3af; font-size:11px; margin-bottom:6px; }
+.tile9-svg { width:100%; height:100%; }
+.tile9-center-label { fill:#e5e7eb; font-size:12px; text-anchor:middle; }
+
+/* Polished legend for Tile 9 (right column) */
+.tile9-legend {
+  background: linear-gradient(180deg, rgba(11,17,28,0.6), rgba(7,16,24,0.6));
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 8px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(2,6,12,0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tile9-legend > div { display:flex; justify-content:space-between; align-items:center; padding:6px 8px; border-radius:8px; }
+.tile9-legend > div:not(:first-child) { background: rgba(255,255,255,0.01); }
+.tile9-legend > div:first-child { border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom:8px; }
+
+.tile9-legend .swatch { width:14px; height:14px; border-radius:3px; border: 1px solid rgba(0,0,0,0.45); box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset; }
+.tile9-legend div > div { display:flex; align-items:center; gap:8px; }
+.tile9-legend div > div:last-child { color: #fff; font-size:16px; font-weight:700; }
+.tile9-legend div > div:first-child { color:#cbd5e1; font-size:13px; }
+
+/* Slightly reduce legend font on smaller cards */
+@media (max-width:600px) {
+  .tile9-legend { padding:6px; }
+  .tile9-legend div > div:last-child { font-size:14px; }
+}
+
+.summary-value {
+  font-size: 12px;
+  font-weight: bold;
+  color: #e5e7eb;
+}
+
+.summary-list {
+  display: flex;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.summary-list ul {
+  margin: 2px 0 0 12px;
+  padding: 0;
+}
+
+.summary-mini-chart {
+  margin-top: 4px;
+  width: 100%;
+  /* allow the mini-chart to grow and use remaining space */
+  flex: 1 1 0px;
+  display: flex;
+  justify-content: center;
+  align-items: stretch; /* let svg stretch to fill vertical space */
+  padding: 0;
+}
+
+.summary-mini-chart svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ===========================
+   COMBINED LEAGUE VIEW (Cell 8)
+   =========================== */
+.combined-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.combined-tab {
+  background: #26262b;
+  color: #ddd;
+  border: 1px solid #444;
+  padding: 3px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.combined-tab.active {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #fff;
+}
+
+#combined-league-view {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Both containers share chart styling */
+#league-strength,
+#league-nation-graph {
+  width: 100%;
+  height: 100%;
+  display: none; /* toggled via JS */
+}
+
+/* ===========================
+   TOOLTIP (shared)
+   =========================== */
+#tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(30, 30, 30, 0.98);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  font-size: 11px;
+  opacity: 0;
+  z-index: 20;
+  transition: opacity 0.15s ease;
+}
+
+/* ===========================
+   ANIMATION HELPER
+   =========================== */
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===========================
+   SWAP TILE 3 & TILE 6
+   =========================== */
+
+/* Tile 3 → move to row 2, col 3 */
+#cell-3 {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+/* Tile 6 → move to row 1, col 3 */
+#cell-6 {
+  grid-column: 3;
+  grid-row: 1;
+}
