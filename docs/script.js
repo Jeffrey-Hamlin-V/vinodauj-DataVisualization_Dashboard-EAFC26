@@ -1,5 +1,3 @@
-
-
 /**************************************************************
  * GLOBAL STATE & CONSTANTS
  **************************************************************/
@@ -23,8 +21,7 @@ let finderCriteria = {
   cluster: "any"
 };
 
-// Active player selection (for explainability Tile 9). We store a stable key so
-// selection survives re-rendering (compare Name+Team+Nation).
+
 let activePlayerKey = null;
 let activePlayer = null;
 function playerKey(p) {
@@ -71,7 +68,6 @@ function getClusterShape(clusterIndex, x, y, size) {
  * Tile 9: Radial Attribute Contribution Explainability
  * Unique radial format: six radial bars (spokes) showing contribution points
  * for attributes PAC, SHO, PAS, DRI, DEF, PHY. Inner circle shows OVR.
- * Uses only `getFilteredPlayers()` and `brushedPlayers`/`activePlayerKey`.
  */
 function drawAttributeRadial() {
   const container = d3.select('#tile-9');
@@ -201,8 +197,6 @@ function drawAttributeRadial() {
 function setActivePlayer(p) {
   activePlayer = p || null;
   activePlayerKey = playerKey(p);
-  // refresh visuals so any tile that reads activePlayerKey (e.g., tile 9)
-  // will update. Do not clear brushes or other filters.
   try { refreshAllVisuals(); } catch (e) { /* refresh may not be ready yet */ }
 }
 
@@ -239,11 +233,7 @@ function getCountryPattern(count) {
 
 /*
  * Squad Composition vs Ideal Formation (Cell 7)
- * - Uses only getFilteredPlayers()
- * - Maps detailed positions into 4 role groups
- * - Renders an inner donut for ACTUAL composition and an outer ring
- *   showing IDEAL percentages as reference markers
- */
+*/
 function drawSquadComposition() {
   const container = d3.select("#squad-composition");
   container.selectAll("*").remove();
@@ -498,14 +488,7 @@ let currentCountsMap = new Map();
 // ------------------------------------------------------------------
 let clustersComputed = false;
 
-// New cluster naming per request:
-// 0: Goalkeepers
-// 1: Technical Finishers
-// 2: Flashy Dribblers
-// 3: Creative Playmakers
-// 4: Possession Controllers
-// 5: Physical Walls
-// 6: Tackle Specialists
+
 const CLUSTER_LABELS = {
   0: "Goalkeepers",
   1: "Technical Finishers",
@@ -516,11 +499,7 @@ const CLUSTER_LABELS = {
   6: "Tackle Specialists"
 };
 
-// Colours for Tile 1 (radial clusters):
-// c1 - golden yellow
-// c2 & c3 - shades of green
-// c4 & c5 - shades of blue
-// c6 & c7 - shades of red
+
 const CLUSTER_COLORS = [
   "#fbbf24", // C1 Goalkeepers
   "#5ca3efff", // C2 Physical Defenders
@@ -532,7 +511,6 @@ const CLUSTER_COLORS = [
 ];
 
 function computeClusters(players) {
-  // Attributes to use for playstyle clustering (user-provided list)
   const ATTRS = [
     "PAC","SHO","PAS","DRI","DEF","PHY",
     "Acceleration","Sprint Speed","Positioning","Finishing","Shot Power",
@@ -543,7 +521,7 @@ function computeClusters(players) {
     "Sliding Tackle","Jumping","Stamina","Strength","Aggression","Position"
   ];
 
-  const K_OUTFIELD = 6; // + GK = 7 total
+  const K_OUTFIELD = 6; 
 
   // Split GK vs outfield
   const outfield = [];
@@ -576,8 +554,6 @@ function computeClusters(players) {
   }
   const Z = X.map(r => r.map((v, j) => (v - means[j]) / stds[j]));
 
-  // Deterministic seeded centroids targeting attacker/midfielder/defender behaviours
-  // Build quick helper to get attribute index in ATTRS
   const attrIndex = name => ATTRS.indexOf(name);
 
   // Score vectors for targeted seeds (use Z-normalised values)
